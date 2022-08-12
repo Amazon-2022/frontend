@@ -18,7 +18,7 @@ export default function GenerateUser(props) {
     role: "CUSTOMER"
   });
   const [createUser, setCreateUser] = useState(true);
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState(Math.random().toString(36).slice(-8));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +31,11 @@ export default function GenerateUser(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const pass = Math.random().toString(36).slice(-8);
-        setPassword(pass);
         await users.register({username: values.username, password, role: values.role});
         setCreateUser(false);
         triggerAlert("success", "New team onboarded to CCS");
+        const pass = Math.random().toString(36).slice(-8);
+        setPassword(pass);
     } catch (err) {
         triggerAlert("error", err.message);
     }
