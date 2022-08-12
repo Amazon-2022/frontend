@@ -20,7 +20,7 @@ const usersApi = new usersAPI();
 const mdTheme = createTheme();
 
 export default function Admin(props) {
-  const { triggerAlert } = props;
+  const { loggedIn, triggerAlert } = props;
   const [schemas, setSchemas] = useState([]);
   const [users, setUsers] = useState([]);
   const [open, setOpen] = React.useState(false);

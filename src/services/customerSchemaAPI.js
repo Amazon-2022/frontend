@@ -16,9 +16,9 @@ export default class customerSchemaAPI {
         return res.data.data;
     }
 
-    async getCustomerSchemas(customer, ns, setting) {
-        const body = { customer, ns, setting };
-        const res = await this.api.instance.get(`/api/customerSchemas`, body);
+    async getCustomerSchemas(customer) {
+        const res = customer ? await this.api.instance.get(`/api/customerSchemas?customer=${customer}`) :
+        await this.api.instance.get(`/api/customerSchemas`);
         return res.data.data;
     }
 

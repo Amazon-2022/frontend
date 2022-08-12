@@ -31,7 +31,8 @@ export default function GenerateUser(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        setPassword(Math.random().toString(36).slice(-8));
+        const pass = Math.random().toString(36).slice(-8);
+        setPassword(pass);
         await users.register({username: values.username, password, role: values.role});
         setCreateUser(false);
         triggerAlert("success", "New team onboarded to CCS");

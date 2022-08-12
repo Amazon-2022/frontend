@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     async function initApp() {
       try{
-        const isLoggedIn = await users.checkLogin();
+        const isLoggedIn = await users.checkLogin()
         setLoggedIn(isLoggedIn);
       } catch (err) {
         triggerAlert("error", err.message);
@@ -41,8 +41,8 @@ function App() {
   
   const routes = [
     { path: "/", element: <Login triggerAlert={triggerAlert}/> },
-    { path: "/Customer", element: <Customer triggerAlert={triggerAlert}/> },
-    { path: "/Admin", element: <Admin triggerAlert={triggerAlert}/> }
+    { path: "/Customer", element: <Customer loggedIn={loggedIn} triggerAlert={triggerAlert}/> },
+    { path: "/Admin", element: <Admin loggedIn={loggedIn} triggerAlert={triggerAlert}/> }
   ];
 
   const routeComponents = routes.map(({ path, element }, key) => (
@@ -51,7 +51,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <Menu loggedIn = {loggedIn} logOut={logOut} />
+      <Menu loggedIn={loggedIn} logOut={logOut} />
         <BrowserRouter>
           <Routes>{routeComponents}</Routes>
         </BrowserRouter>
