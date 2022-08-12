@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class API {
-    constructor(baseUrl = "http://localhost:6060") {
+    constructor(baseUrl = "https://ccs2022.herokuapp.com/") {
         this.token = localStorage.getItem("token");
         this.instance =
             this.token === null
