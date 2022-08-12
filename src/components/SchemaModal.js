@@ -15,17 +15,29 @@ const schemasAPI = new customerSchemaAPI();
 
 export default function SchemaModal(props) {
   const {open, handleClose, triggerAlert, modalData } = props;
-  const [ns, setNs] = modalData ? useState(modalData.ns) : useState("");
-  const [setting, setSetting] = modalData ?  useState(modalData.setting) : useState("");
-  const [description, setDescription] = modalData ?  useState(modalData.description) : useState("");
-  const [stype, setStype] = modalData ?  useState(modalData.stype) : useState("");
-  const [enumVals, setEnumVals] = modalData ?  useState(modalData.enumVals) : useState("");
+  const [ns, setNs] = useState("");
+  const [setting, setSetting] = useState("");
+  const [description, setDescription] = useState("");
+  const [stype, setStype] = useState("");
+  const [enumVals, setEnumVals] = useState("");
 
-  const handleSubmit = async () => {
+  const handleCreate = async () => {
     try {
         const enumArray = enumVals.split(",");
-        await schemasAPI.create({ ns, setting, description, type: stype, enumVals: enumArray });
+        await schemasAPI.create({ ns, setting, description, type: stype, enumVals: enumArray })
         triggerAlert("success", "New schema created in CCS");
+        handleClose();
+    } catch (err) {
+        triggerAlert("error", err.message)
+    }
+  }
+
+  const handleUpdate = async (id) => {
+    try {
+        const enumArray = enumVals.split(",");
+        await schemasAPI.updateCustomerSchema(id, { ns, setting, description, type: stype, enumVals: enumArray })
+        triggerAlert("success", "Schema has been updated in CCS");
+        handleClose();
     } catch (err) {
         triggerAlert("error", err.message)
     }
@@ -34,7 +46,7 @@ export default function SchemaModal(props) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{modalData? modalData.title : "Create New Schema"}</DialogTitle>
+        <DialogTitle>{modalData? "Update Current Schema" : "Create New Schema"}</DialogTitle>
         <DialogContent>
           <TextField
             margin="normal"
@@ -42,7 +54,7 @@ export default function SchemaModal(props) {
             fullWidth
             label="NameSpace"
             name="ns"
-            defaultValue={ns}
+            defaultValue={modalData? modalData.ns : ns}
             autoFocus
             onChange={(event) => setNs(event.target.value)}
           />
@@ -52,7 +64,7 @@ export default function SchemaModal(props) {
             fullWidth
             label="setting"
             name="setting"
-            defaultValue={setting}
+            defaultValue={modalData? modalData.setting : setting}
             autoFocus
             onChange={(event) => setSetting(event.target.value)}
           />
@@ -62,7 +74,7 @@ export default function SchemaModal(props) {
             fullWidth
             label="description"
             name="description"
-            defaultValue={description}
+            defaultValue={modalData? modalData.description : description}
             autoFocus
             onChange={(event) => setDescription(event.target.value)}
           />
@@ -71,7 +83,7 @@ export default function SchemaModal(props) {
             row
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="type"
-            value={stype}
+            defaultValue={modalData? modalData.type : stype}
             onChange={(event) => setStype(event.target.value)}
           >
             <FormControlLabel value="String" control={<Radio />} label="String" />
@@ -86,7 +98,7 @@ export default function SchemaModal(props) {
               fullWidth
               label="enumVals"
               name="enumVals"
-              defaultValue={enumVals}
+              defaultValue={modalData? modalData.enumVals : enumVals}
               autoFocus
               onChange={(event) => setEnumVals(event.target.value)}
             />
@@ -96,7 +108,9 @@ export default function SchemaModal(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Create Schema</Button>
+          {modalData ? (<Button onClick={() => handleUpdate(modalData.id)}>Update Schema</Button>) : 
+          (<Button onClick={() => handleCreate()}>Create Schema</Button>)
+          }
         </DialogActions>
       </Dialog>
     </div>
