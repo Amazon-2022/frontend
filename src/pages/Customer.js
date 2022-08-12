@@ -7,11 +7,9 @@ import AddIcon from '@mui/icons-material/Add';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import GenerateUser from '../components/GenerateUser';
 import Schemas from '../components/Schemas';
 import customerSchemaAPI from '../services/customerSchemaAPI';
 import usersAPI from '../services/userAPI';
-import Users from '../components/Users';
 import SchemaModal from '../components/SchemaModal';
 
 const schemasAPI = new customerSchemaAPI();
